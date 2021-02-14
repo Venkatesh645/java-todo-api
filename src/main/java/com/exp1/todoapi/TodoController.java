@@ -1,10 +1,8 @@
 package com.exp1.todoapi;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 
@@ -35,9 +33,33 @@ public class TodoController {
     }
   }
 
-  @PostMapping(path = "", consumes = "application/json", produces = "application/json")
+  @PostMapping("")
   public Todo create(@RequestBody Todo todo) {
     return this.repository.save(todo);
+  }
+
+  @PutMapping("/{id}")
+  public Todo update(@RequestBody Todo todo) {
+    Optional<Todo> todoOpt = this.repository.findById(todo.getId());
+
+    if (!todoOpt.isPresent()) {
+      throw new NotFoundException();
+    }
+
+    Todo todoObj = todoOpt.get();
+    todoObj.setTitle(todo.getTitle());
+    return this.repository.save(todoObj);
+  }
+
+  @DeleteMapping("/{id}")
+  public String delete(@PathVariable(value = "id") long id) {
+    Optional<Todo> todoOpt = this.repository.findById(id);
+
+    if (!todoOpt.isPresent()) {
+      throw new NotFoundException();
+    }
+    this.repository.deleteById(id);
+    return "Deleted todo successfully";
   }
 
 
