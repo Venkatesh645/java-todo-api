@@ -6,26 +6,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/todos")
 public class TodoController {
-    TodoRepository repository;
+  TodoRepository repository;
 
-    @Autowired
-    public TodoController(TodoRepository repository) {
-        this.repository = repository;
-    }
+  @Autowired
+  public TodoController(TodoRepository repository) {
+    this.repository = repository;
+  }
 
-    @RequestMapping("/")
-    public Iterable<Todo> list() {
-        Iterable<Todo> todos = this.repository.findAll();
-        System.out.println(todos);
-        return todos;
-    }
+  @RequestMapping("")
+  public Iterable<Todo> list() {
+    Iterable<Todo> todos = this.repository.findAll();
+    System.out.println(todos);
+    return todos;
+  }
 
-    @RequestMapping("/{id}")
-    public Object show(@PathVariable(value = "id") long id) {
-        return this.repository.findById(id);
-    }
+  @RequestMapping("/{id}")
+  public Object show(@PathVariable(value = "id") long id) {
+    return this.repository.findById(id);
+  }
 
 
 }
