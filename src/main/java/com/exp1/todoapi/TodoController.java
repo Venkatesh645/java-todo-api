@@ -1,5 +1,6 @@
 package com.exp1.todoapi;
 
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +40,11 @@ public class TodoController {
   }
 
   @PutMapping("/{id}")
-  public Todo update(@RequestBody Todo todo) {
-    Optional<Todo> todoOpt = this.repository.findById(todo.getId());
+  public Todo update(@PathVariable(value="id") long id, @RequestBody Todo todo) {
 
-    if (!todoOpt.isPresent()) {
+    Optional<Todo> todoOpt = this.repository.findById(id);
+
+    if (todoOpt.isEmpty()) {
       throw new NotFoundException();
     }
 
@@ -55,7 +57,7 @@ public class TodoController {
   public String delete(@PathVariable(value = "id") long id) {
     Optional<Todo> todoOpt = this.repository.findById(id);
 
-    if (!todoOpt.isPresent()) {
+    if (todoOpt.isEmpty()) {
       throw new NotFoundException();
     }
     this.repository.deleteById(id);
