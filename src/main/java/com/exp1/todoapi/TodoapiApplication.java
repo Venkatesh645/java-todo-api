@@ -12,13 +12,6 @@ public class TodoapiApplication {
     SpringApplication.run(TodoapiApplication.class, args);
   }
 
-  @Bean
-  CommandLineRunner runner(TodoRepository repository) {
-    return args -> {
-      repository.save(new Todo("First todo"));
-      repository.save(new Todo("Second todo"));
-    };
-  }
 
 
 }
