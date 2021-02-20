@@ -1,9 +1,10 @@
-package com.exp1.todoapi;
+package com.exp1.todoapi.controllers;
 
-import com.sun.istack.NotNull;
+import com.exp1.todoapi.entities.TodoEntity;
+import com.exp1.todoapi.exceptions.NotFoundException;
+import com.exp1.todoapi.repositories.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 
@@ -18,15 +19,15 @@ public class TodoController {
   }
 
   @GetMapping("")
-  public Iterable<Todo> list() {
-    Iterable<Todo> todos = this.repository.findAll();
+  public Iterable<TodoEntity> list() {
+    Iterable<TodoEntity> todos = this.repository.findAll();
     System.out.println(todos);
     return todos;
   }
 
   @GetMapping("/{id}")
-  public Todo show(@PathVariable(value = "id") long id) {
-    Optional<Todo> TodoOpt = this.repository.findById(id);
+  public TodoEntity show(@PathVariable(value = "id") long id) {
+    Optional<TodoEntity> TodoOpt = this.repository.findById(id);
     if (TodoOpt.isPresent()) {
       return TodoOpt.get();
     } else {
@@ -35,27 +36,27 @@ public class TodoController {
   }
 
   @PostMapping("")
-  public Todo create(@RequestBody Todo todo) {
+  public TodoEntity create(@RequestBody TodoEntity todo) {
     return this.repository.save(todo);
   }
 
   @PutMapping("/{id}")
-  public Todo update(@PathVariable(value="id") long id, @RequestBody Todo todo) {
+  public TodoEntity update(@PathVariable(value="id") long id, @RequestBody TodoEntity todo) {
 
-    Optional<Todo> todoOpt = this.repository.findById(id);
+    Optional<TodoEntity> todoOpt = this.repository.findById(id);
 
     if (todoOpt.isEmpty()) {
       throw new NotFoundException();
     }
 
-    Todo todoObj = todoOpt.get();
+    TodoEntity todoObj = todoOpt.get();
     todoObj.setTitle(todo.getTitle());
     return this.repository.save(todoObj);
   }
 
   @DeleteMapping("/{id}")
   public String delete(@PathVariable(value = "id") long id) {
-    Optional<Todo> todoOpt = this.repository.findById(id);
+    Optional<TodoEntity> todoOpt = this.repository.findById(id);
 
     if (todoOpt.isEmpty()) {
       throw new NotFoundException();

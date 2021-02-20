@@ -1,11 +1,11 @@
-package com.exp1.todoapi;
+package com.exp1.todoapi.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Todo {
+public class TodoEntity {
 
     public String getTitle() {
         return title;
@@ -36,11 +36,11 @@ public class Todo {
                 '}';
     }
 
-    public Todo(){
+    public TodoEntity(){
 
     }
 
-    public Todo(String title) {
+    public TodoEntity(String title) {
         this.title = title;
     }
 }
