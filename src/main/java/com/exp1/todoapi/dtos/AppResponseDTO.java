@@ -5,6 +5,7 @@ import java.util.List;
 public class AppResponseDTO {
   private Object response;
   private List<ErrorDTO> errors;
+  private boolean success;
 
   public Object getResponse() {
     return response;
@@ -20,6 +21,14 @@ public class AppResponseDTO {
 
   public void setErrors(List<ErrorDTO> errors) {
     this.errors = errors;
+  }
+
+  public boolean isSuccess() {
+    return success;
+  }
+
+  public void setSuccess(boolean success) {
+    this.success = success;
   }
 }
 
