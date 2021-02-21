@@ -1,10 +1,15 @@
 package com.exp1.todoapi.controllers;
 
+import com.exp1.todoapi.dtos.AppResponseDTO;
+import com.exp1.todoapi.dtos.ErrorDTO;
 import com.exp1.todoapi.entities.TodoEntity;
 import com.exp1.todoapi.exceptions.NotFoundException;
 import com.exp1.todoapi.repositories.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -19,10 +24,21 @@ public class TodoController {
   }
 
   @GetMapping("")
-  public Iterable<TodoEntity> list() {
-    Iterable<TodoEntity> todos = this.repository.findAll();
-    System.out.println(todos);
-    return todos;
+  public AppResponseDTO list() {
+    AppResponseDTO appResponse = new AppResponseDTO();
+    try {
+      List<TodoEntity> todos = this.repository.findAll();
+      if (todos.isEmpty()) {
+        this.errorResponse(appResponse, "No data found!!");
+      } else {
+        appResponse.setSuccess(true);
+        appResponse.setResponse(todos);
+      }
+
+    } catch (Exception error) {
+      this.errorResponse(appResponse, error.getMessage());
+    }
+    return appResponse;
   }
 
   @GetMapping("/{id}")
@@ -41,7 +57,7 @@ public class TodoController {
   }
 
   @PutMapping("/{id}")
-  public TodoEntity update(@PathVariable(value="id") long id, @RequestBody TodoEntity todo) {
+  public TodoEntity update(@PathVariable(value = "id") long id, @RequestBody TodoEntity todo) {
 
     Optional<TodoEntity> todoOpt = this.repository.findById(id);
 
@@ -65,5 +81,16 @@ public class TodoController {
     return "Deleted todo successfully";
   }
 
+  //  Private helper - errorResponse method
+  private void errorResponse(AppResponseDTO appResponse, String message) {
+    List<ErrorDTO> errors = new ArrayList<ErrorDTO>();
+    ErrorDTO errorObj = new ErrorDTO();
+    appResponse.setSuccess(false);
+    if (appResponse != null && message != null) {
+      errorObj.setMessage(message);
+      errors.add(errorObj);
+      appResponse.setErrors(errors);
+    }
+  }
 
 }

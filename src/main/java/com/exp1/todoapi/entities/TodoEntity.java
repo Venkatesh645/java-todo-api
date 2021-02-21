@@ -1,11 +1,16 @@
 package com.exp1.todoapi.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name= "todos")
 public class TodoEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+
 
     public String getTitle() {
         return title;
@@ -23,10 +28,6 @@ public class TodoEntity {
         this.id = id;
     }
 
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String title;
 
     @Override
     public String toString() {

@@ -35,11 +35,10 @@ public class UsersController {
       } else {
         this.errorResponse(appResponse, "Record not found!!");
       }
-      return appResponse;
     } catch (Exception error) {
       this.errorResponse(appResponse, error.getMessage());
-      return appResponse;
     }
+    return appResponse;
   }
 
   @PostMapping("/register")
@@ -59,14 +58,14 @@ public class UsersController {
       } else {
         this.errorResponse(appResponse, "Failed to save the user!");
       }
-      return appResponse;
     } catch (Exception error) {
       this.errorResponse(appResponse, error.getMessage());
-      return appResponse;
     }
+    return appResponse;
   }
 
 
+//  Private helper - errorResponse method
   private void errorResponse(AppResponseDTO appResponse, String message) {
     List<ErrorDTO> errors = new ArrayList<ErrorDTO>();
     ErrorDTO errorObj = new ErrorDTO();
